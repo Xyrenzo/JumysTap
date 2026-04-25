@@ -20,8 +20,6 @@ func NewAuthHandler(auth *service.AuthService) *AuthHandler {
 }
 
 // POST /api/auth/register
-// Body: { "name": "...", "phone": "...", "city": "..." }
-// Response: { "verificationLink": "https://t.me/..." }
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var req model.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -55,8 +53,6 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /api/auth/login/request
-// Body: { "name": "..." }
-// Sends OTP to the user's Telegram
 func (h *AuthHandler) RequestOTP(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		Name string `json:"name"`
@@ -91,8 +87,6 @@ func (h *AuthHandler) RequestOTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /api/auth/login/verify
-// Body: { "name": "...", "code": "..." }
-// Response: { "token": "...", "user": {...} }
 func (h *AuthHandler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 	var req model.LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -121,7 +115,7 @@ func (h *AuthHandler) VerifyOTP(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, resp)
 }
 
-// GET /api/profile  (requires JWT)
+// GET /api/profile
 func (h *AuthHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.GetUserID(r)
 	if userID == "" {
@@ -145,7 +139,6 @@ func (h *AuthHandler) GetProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /api/auth/status?name=...
-// Returns whether user has activated Telegram
 func (h *AuthHandler) ActivationStatus(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	if name == "" {
