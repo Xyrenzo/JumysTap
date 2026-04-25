@@ -26,7 +26,7 @@ const CARD_GRADIENTS = [
 function apiFetch(path, options = {}) {
   if (window.JT?.apiFetch) return window.JT.apiFetch(path, options);
 
-  return fetch(`http://localhost:8080/api${path}`, options).then(async (response) => {
+  return fetch(`${window.JT?.API_BASE || '/api'}${path}`, options).then(async (response) => {
     let data = {};
     try {
       data = await response.json();

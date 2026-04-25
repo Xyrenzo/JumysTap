@@ -13,8 +13,9 @@ func NewPool(ctx context.Context, dbURL string) (*pgxpool.Pool, error) {
 		return nil, fmt.Errorf("parse db config: %w", err)
 	}
 
-	cfg.MaxConns = 20
-	cfg.MinConns = 2
+	// Keep the pool conservative so hobby/free databases are not saturated by idle connections.
+	cfg.MaxConns = 10
+	cfg.MinConns = 0
 
 	pool, err := pgxpool.NewWithConfig(ctx, cfg)
 	if err != nil {

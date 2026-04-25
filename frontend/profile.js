@@ -1,6 +1,6 @@
 'use strict';
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = window.JT?.API_BASE || '/api';
 const DEFAULT_AVATAR =
   "data:image/svg+xml,%3Csvg viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='80' fill='%23dbeafe'/%3E%3Ccircle cx='40' cy='32' r='14' fill='%2393c5fd'/%3E%3Cellipse cx='40' cy='72' rx='22' ry='16' fill='%2393c5fd'/%3E%3C/svg%3E";
 

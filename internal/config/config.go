@@ -20,11 +20,11 @@ func Load() (*Config, error) {
 	_ = godotenv.Load()
 
 	cfg := &Config{
-		DBUrl:         os.Getenv("DB_URL"),
+		DBUrl:         firstNonEmpty("DB_URL", "DATABASE_URL"),
 		JWTSecret:     os.Getenv("JWT_SECRET"),
 		TelegramToken: os.Getenv("TELEGRAM_BOT_TOKEN"),
-		ServerPort:    os.Getenv("SERVER_PORT"),
-		BaseURL:       os.Getenv("BASE_URL"),
+		ServerPort:    firstNonEmpty("PORT", "SERVER_PORT"),
+		BaseURL:       firstNonEmpty("BASE_URL", "RENDER_EXTERNAL_URL"),
 		MLUrl:         os.Getenv("ML_URL"), // необязательный
 	}
 
@@ -34,9 +34,6 @@ func Load() (*Config, error) {
 	if cfg.JWTSecret == "" {
 		return nil, fmt.Errorf("JWT_SECRET is required")
 	}
-	if cfg.TelegramToken == "" {
-		return nil, fmt.Errorf("TELEGRAM_BOT_TOKEN is required")
-	}
 	if cfg.ServerPort == "" {
 		cfg.ServerPort = "8080"
 	}
@@ -45,4 +42,14 @@ func Load() (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+func firstNonEmpty(keys ...string) string {
+	for _, key := range keys {
+		if value := os.Getenv(key); value != "" {
+			return value
+		}
+	}
+
+	return ""
 }

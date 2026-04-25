@@ -39,6 +39,8 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case errors.Is(err, service.ErrAlreadyExists):
 			respondError(w, http.StatusConflict, "user with this name already exists")
+		case errors.Is(err, service.ErrTelegramDown):
+			respondError(w, http.StatusServiceUnavailable, "telegram auth is temporarily unavailable")
 		default:
 			log.Printf("[handler] register: %v", err)
 			respondError(w, http.StatusInternalServerError, "internal error")
@@ -74,6 +76,8 @@ func (h *AuthHandler) RequestOTP(w http.ResponseWriter, r *http.Request) {
 			respondError(w, http.StatusNotFound, "user not found")
 		case errors.Is(err, service.ErrNotActivated):
 			respondError(w, http.StatusForbidden, "telegram not activated — follow the registration link")
+		case errors.Is(err, service.ErrTelegramDown):
+			respondError(w, http.StatusServiceUnavailable, "telegram auth is temporarily unavailable")
 		default:
 			log.Printf("[handler] request otp: %v", err)
 			respondError(w, http.StatusInternalServerError, "internal error")

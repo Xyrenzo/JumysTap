@@ -1,6 +1,6 @@
 'use strict';
 
-const API = 'http://localhost:8080/api';
+const API = window.JT?.API_BASE || '/api';
 
 const $ = (id) => document.getElementById(id);
 

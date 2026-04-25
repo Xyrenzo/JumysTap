@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 	"time"
 
 	"JumysTab/internal/middleware"
@@ -20,6 +21,7 @@ var (
 	ErrAlreadyExists = errors.New("user already exists")
 	ErrNotActivated  = errors.New("telegram not activated — follow the link to activate")
 	ErrInvalidCode   = errors.New("invalid or expired code")
+	ErrTelegramDown  = errors.New("telegram integration is disabled")
 )
 
 type TelegramBot interface {
@@ -54,6 +56,10 @@ func NewAuthService(
 
 // Register creates a new user and returns a Telegram deep-link for activation.
 func (s *AuthService) Register(ctx context.Context, req *model.RegisterRequest) (verificationLink string, err error) {
+	if !s.telegramEnabled() {
+		return "", ErrTelegramDown
+	}
+
 	_, err = s.users.FindByName(ctx, req.Name)
 	if err == nil {
 		return "", ErrAlreadyExists
@@ -93,6 +99,10 @@ func (s *AuthService) Register(ctx context.Context, req *model.RegisterRequest) 
 
 // RequestOTP sends an OTP via Telegram if the user has activated the bot.
 func (s *AuthService) RequestOTP(ctx context.Context, name string) error {
+	if !s.telegramEnabled() {
+		return ErrTelegramDown
+	}
+
 	user, err := s.users.FindByName(ctx, name)
 	if err != nil {
 		if errors.Is(err, repository.ErrNotFound) {
@@ -149,6 +159,10 @@ func (s *AuthService) VerifyOTP(ctx context.Context, name, code string) (*model.
 
 // ActivateTelegram is called by the bot when user sends /start <token>.
 func (s *AuthService) ActivateTelegram(ctx context.Context, token string, chatID int64) error {
+	if !s.telegramEnabled() {
+		return ErrTelegramDown
+	}
+
 	userID, err := s.pending.FindByToken(ctx, token)
 	if err != nil {
 		if errors.Is(err, repository.ErrNotFound) {
@@ -204,4 +218,8 @@ func generateOTP(digits int) (string, error) {
 		return "", err
 	}
 	return fmt.Sprintf("%0*d", digits, n), nil
+}
+
+func (s *AuthService) telegramEnabled() bool {
+	return s.bot != nil && strings.TrimSpace(s.bot.BotUsername()) != ""
 }

@@ -13,12 +13,21 @@ import (
 	"JumysTab/internal/config"
 	"JumysTab/internal/db"
 	"JumysTab/internal/handler"
+	"JumysTab/internal/migration"
 	"JumysTab/internal/ml"
 	"JumysTab/internal/repository"
 	"JumysTab/internal/router"
 	"JumysTab/internal/service"
 	"JumysTab/internal/telegram"
 )
+
+type runtimeBot interface {
+	BotUsername() string
+	NotifyJobMatch(chatID int64, jobID, jobTitle string, score float64) error
+	SendOTP(chatID int64, code string) error
+	SendWelcome(chatID int64, name string) error
+	StartPolling(ctx context.Context)
+}
 
 func main() {
 	cfg, err := config.Load()
@@ -36,6 +45,15 @@ func main() {
 	}
 	defer pool.Close()
 
+	if err := migration.Apply(ctx, pool); err != nil {
+		log.Fatalf("migrations: %v", err)
+	}
+
+	frontendRoot, err := router.ResolveFrontendRoot()
+	if err != nil {
+		log.Fatalf("frontend assets: %v", err)
+	}
+
 	// Repositories
 	userRepo := repository.NewUserRepository(pool)
 	otpRepo := repository.NewOTPRepository(pool)
@@ -45,31 +63,31 @@ func main() {
 	// Auth service (bot injected after)
 	var authSvc *service.AuthService
 
-	// Telegram bot — onActivate callback wires back to the service
-	bot, err := telegram.NewBot(cfg.TelegramToken, func(ctx context.Context, token string, chatID int64) error {
+	bot := buildBot(cfg, func(ctx context.Context, token string, chatID int64) error {
 		return authSvc.ActivateTelegram(ctx, token, chatID)
 	})
-	if err != nil {
-		log.Fatalf("telegram bot: %v", err)
-	}
 
 	// Wire services
 	authSvc = service.NewAuthService(userRepo, otpRepo, pendingRepo, bot, cfg.JWTSecret)
 	jobSvc := service.NewJobService(jobRepo, userRepo).
-		WithNotifier(bot).
 		WithMLConfig(ml.Config{
-			MLURL:     cfg.MLUrl, // "" = локальный скоринг без Python
+			MLURL:     cfg.MLUrl,
 			Threshold: 0.6,
 			TopN:      10,
 		})
 
-	// Start bot polling in background
-	go bot.StartPolling(ctx)
+	if bot.BotUsername() != "" {
+		jobSvc = jobSvc.WithNotifier(bot)
+		go bot.StartPolling(ctx)
+	}
 
 	// HTTP handlers
 	authHandler := handler.NewAuthHandler(authSvc)
 	jobHandler := handler.NewJobHandler(jobSvc)
-	httpHandler := router.New(authHandler, jobHandler, cfg.JWTSecret)
+	httpHandler, err := router.New(authHandler, jobHandler, cfg.JWTSecret, frontendRoot)
+	if err != nil {
+		log.Fatalf("router: %v", err)
+	}
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.ServerPort,
@@ -85,6 +103,7 @@ func main() {
 
 	go func() {
 		log.Printf("[server] listening on :%s", cfg.ServerPort)
+		log.Printf("[server] serving frontend from %s", frontendRoot)
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("server: %v", err)
 		}
@@ -101,4 +120,19 @@ func main() {
 		log.Printf("[server] shutdown error: %v", err)
 	}
 	log.Println("[server] stopped")
+}
+
+func buildBot(cfg *config.Config, onActivate telegram.OnActivate) runtimeBot {
+	if cfg.TelegramToken == "" {
+		log.Println("[telegram] disabled: TELEGRAM_BOT_TOKEN is not set")
+		return telegram.NewDisabledBot()
+	}
+
+	bot, err := telegram.NewBot(cfg.TelegramToken, onActivate)
+	if err != nil {
+		log.Printf("[telegram] disabled: %v", err)
+		return telegram.NewDisabledBot()
+	}
+
+	return bot
 }

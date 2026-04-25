@@ -1,7 +1,13 @@
 'use strict';
 
 (() => {
-  const API_BASE = 'http://localhost:8080/api';
+  function resolveApiBase() {
+    if (typeof window === 'undefined' || !window.location) return '/api';
+    if (window.location.protocol === 'file:') return 'http://localhost:8080/api';
+    return `${window.location.origin}/api`;
+  }
+
+  const API_BASE = resolveApiBase();
 
   function getToken() {
     return localStorage.getItem('jt_token') || '';
