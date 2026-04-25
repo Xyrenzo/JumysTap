@@ -60,7 +60,7 @@ func main() {
 	pendingRepo := repository.NewPendingRepository(pool)
 	jobRepo := repository.NewJobRepository(pool)
 
-	// Auth service (bot injected after)
+	// Auth service
 	var authSvc *service.AuthService
 
 	bot := buildBot(cfg, func(ctx context.Context, token string, chatID int64) error {
@@ -96,41 +96,40 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  60 * time.Second,
 	}
-
-	// Graceful shutdown
+	
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
-		log.Printf("[server] listening on :%s", cfg.ServerPort)
-		log.Printf("[server] serving frontend from %s", frontendRoot)
+		log.Printf("[сервер] listening on :%s", cfg.ServerPort)
+		log.Printf("[сервер] serving frontend from %s", frontendRoot)
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("server: %v", err)
 		}
 	}()
 
 	<-quit
-	log.Println("[server] shutting down...")
+	log.Println("[сервер] shutting down...")
 
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 	cancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		log.Printf("[server] shutdown error: %v", err)
+		log.Printf("[сервер] shutdown error: %v", err)
 	}
-	log.Println("[server] stopped")
+	log.Println("[сервер] stopped")
 }
 
 func buildBot(cfg *config.Config, onActivate telegram.OnActivate) runtimeBot {
 	if cfg.TelegramToken == "" {
-		log.Println("[telegram] disabled: TELEGRAM_BOT_TOKEN is not set")
+		log.Println("[телеграм] disabled: TELEGRAM_BOT_TOKEN is not set")
 		return telegram.NewDisabledBot()
 	}
 
 	bot, err := telegram.NewBot(cfg.TelegramToken, onActivate)
 	if err != nil {
-		log.Printf("[telegram] disabled: %v", err)
+		log.Printf("[телеграм] disabled: %v", err)
 		return telegram.NewDisabledBot()
 	}
 
