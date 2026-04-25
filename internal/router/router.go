@@ -3,7 +3,6 @@ package router
 import (
 	"io/fs"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 
@@ -62,31 +61,17 @@ func newStaticHandler(frontendRoot string) (http.Handler, error) {
 	}
 
 	fileServer := http.FileServer(http.Dir(frontendRoot))
+	indexPath := filepath.Join(frontendRoot, "index.html")
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if path == "/" {
-			r = cloneRequestWithPath(r, "/index.html")
+		if path == "/" || path == "/index.html" {
+			http.ServeFile(w, r, indexPath)
+			return
 		}
 
 		fileServer.ServeHTTP(w, r)
 	}), nil
-}
-
-func cloneRequestWithPath(r *http.Request, path string) *http.Request {
-	clone := r.Clone(r.Context())
-	clone.URL = newCopyURL(r.URL)
-	clone.URL.Path = path
-	return clone
-}
-
-func newCopyURL(src *url.URL) *url.URL {
-	if src == nil {
-		return &url.URL{}
-	}
-
-	dst := *src
-	return &dst
 }
 
 func ResolveFrontendRoot() (string, error) {
