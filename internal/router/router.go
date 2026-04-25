@@ -13,24 +13,24 @@ import (
 func New(auth *handler.AuthHandler, jobs *handler.JobHandler, jwtSecret string, frontendRoot string) (http.Handler, error) {
 	mux := http.NewServeMux()
 
-	// Auth routes (public)
+	// Auth routes
 	mux.HandleFunc("POST /api/auth/register", auth.Register)
 	mux.HandleFunc("POST /api/auth/login/request", auth.RequestOTP)
 	mux.HandleFunc("POST /api/auth/login/verify", auth.VerifyOTP)
 	mux.HandleFunc("GET /api/auth/status", auth.ActivationStatus)
 
-	// Jobs (public read)
+	// Jobs
 	mux.HandleFunc("GET /api/jobs", jobs.ListJobs)
 	mux.HandleFunc("GET /api/jobs/{id}", jobs.GetJob)
 
-	// Protected middleware
+	// Middleware
 	protected := middleware.Auth(jwtSecret)
 
 	// Profile
 	mux.Handle("GET /api/profile", protected(http.HandlerFunc(auth.GetProfile)))
 	mux.Handle("PUT /api/profile", protected(http.HandlerFunc(jobs.UpdateProfile)))
 
-	// Jobs (protected write)
+	// Jobs
 	mux.Handle("POST /api/jobs", protected(http.HandlerFunc(jobs.CreateJob)))
 	mux.Handle("GET /api/jobs/my", protected(http.HandlerFunc(jobs.MyJobs)))
 	mux.Handle("DELETE /api/jobs/{id}", protected(http.HandlerFunc(jobs.DeleteJob)))
@@ -47,7 +47,7 @@ func New(auth *handler.AuthHandler, jobs *handler.JobHandler, jwtSecret string, 
 	}
 	mux.Handle("/", staticHandler)
 
-	// Wrap entire mux with CORS
+	
 	return corsMiddleware(mux), nil
 }
 
@@ -95,7 +95,7 @@ func ResolveFrontendRoot() (string, error) {
 	return "", os.ErrNotExist
 }
 
-// corsMiddleware adds CORS headers for frontend interaction.
+
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
