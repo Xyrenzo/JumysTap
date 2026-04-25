@@ -21,21 +21,17 @@ type User struct {
 	TGVerified     bool      `json:"tgVerified"`
 	CreatedAt      time.Time `json:"createdAt"`
 }
-
-// RegisterRequest — payload from client on registration
 type RegisterRequest struct {
 	Name  string `json:"name"`
 	Phone string `json:"phone"`
 	City  string `json:"city"`
 }
 
-// LoginRequest — login by username (name) + OTP
 type LoginRequest struct {
 	Name string `json:"name"`
 	Code string `json:"code,omitempty"`
 }
 
-// OTPStore — used internally (stored in memory or DB)
 type OTPRecord struct {
 	UserID    string
 	Code      string
