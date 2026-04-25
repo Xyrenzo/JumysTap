@@ -10,7 +10,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-//go:embed *.sql
 var sqlFiles embed.FS
 
 func Apply(ctx context.Context, pool *pgxpool.Pool) error {
