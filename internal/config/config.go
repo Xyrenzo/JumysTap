@@ -13,7 +13,7 @@ type Config struct {
 	TelegramToken string
 	ServerPort    string
 	BaseURL       string
-	MLUrl         string // URL Python ML сервиса, "" = локальный скоринг
+	MLUrl         string
 }
 
 func Load() (*Config, error) {
@@ -25,7 +25,7 @@ func Load() (*Config, error) {
 		TelegramToken: os.Getenv("TELEGRAM_BOT_TOKEN"),
 		ServerPort:    firstNonEmpty("PORT", "SERVER_PORT"),
 		BaseURL:       firstNonEmpty("BASE_URL", "RENDER_EXTERNAL_URL"),
-		MLUrl:         os.Getenv("ML_URL"), // необязательный
+		MLUrl:         os.Getenv("ML_URL"),
 	}
 
 	if cfg.DBUrl == "" {
