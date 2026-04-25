@@ -8,15 +8,15 @@ type Job struct {
 	AuthorName         string    `json:"authorName,omitempty"`
 	Title              string    `json:"title"`
 	Description        string    `json:"description"`
-	JobType            string    `json:"jobType"`    // "vacancy" | "freelance"
-	WorkFormat         string    `json:"workFormat"` // "remote" | "onsite" | "hybrid"
+	JobType            string    `json:"jobType"`
+	WorkFormat         string    `json:"workFormat"`
 	City               string    `json:"city"`
 	Address            string    `json:"address"`
 	Salary             string    `json:"salary"`
 	ContactPhone       string    `json:"contactPhone,omitempty"`
 	Urgent             bool      `json:"urgent"`
 	Skills             []string  `json:"skills"`
-	Availability       []string  `json:"availability"` // ["morning","evening",...]
+	Availability       []string  `json:"availability"`
 	ExperienceRequired string    `json:"experienceRequired"`
 	EventDate          string    `json:"date,omitempty"`
 	PeopleNeeded       *int64    `json:"peopleNeeded,omitempty"`
