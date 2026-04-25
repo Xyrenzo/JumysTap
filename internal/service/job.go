@@ -23,8 +23,6 @@ var (
 	ErrRoleLocked   = errors.New("role already locked")
 )
 
-// Notifier — интерфейс для отправки уведомлений (Telegram или любой другой)
-// Реализацию подключишь отдельно
 type Notifier interface {
 	NotifyJobMatch(chatID int64, jobID, jobTitle string, score float64) error
 }
@@ -33,7 +31,7 @@ type JobService struct {
 	jobs     *repository.JobRepository
 	users    *repository.UserRepository
 	mlCfg    ml.Config
-	notifier Notifier // nil = уведомления отключены
+	notifier Notifier
 }
 
 func NewJobService(
@@ -44,20 +42,18 @@ func NewJobService(
 		jobs:  jobs,
 		users: users,
 		mlCfg: ml.Config{
-			MLURL:     "", // "" = только локальный скоринг (без Python)
+			MLURL:     "",
 			Threshold: 0.3,
 			TopN:      10,
 		},
 	}
 }
 
-// WithMLConfig — настройка ML (вызови в main если нужен Python сервис)
 func (s *JobService) WithMLConfig(cfg ml.Config) *JobService {
 	s.mlCfg = cfg
 	return s
 }
 
-// WithNotifier — подключение Telegram/другого нотификатора
 func (s *JobService) WithNotifier(n Notifier) *JobService {
 	s.notifier = n
 	return s
@@ -144,13 +140,11 @@ func (s *JobService) CreateJob(ctx context.Context, authorID string, req *model.
 		created = job
 	}
 
-	// Запускаем матчинг асинхронно — не блокируем ответ клиенту
 	go s.runMatching(created)
 
 	return created, nil
 }
 
-// runMatching — горутина, запускается после создания job
 func (s *JobService) runMatching(job *model.Job) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
@@ -173,7 +167,6 @@ func (s *JobService) runMatching(job *model.Job) {
 	log.Printf("[matching] job %s → %d candidates above threshold", job.ID, len(ranked))
 
 	if s.notifier == nil {
-		// Нотификатор не подключён — просто логируем
 		for _, c := range ranked {
 			log.Printf("[matching] candidate %s score=%.3f", c.User.ID, c.Score)
 		}
