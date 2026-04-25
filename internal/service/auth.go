@@ -54,7 +54,7 @@ func NewAuthService(
 	}
 }
 
-// Register creates a new user and returns a Telegram deep-link for activation.
+
 func (s *AuthService) Register(ctx context.Context, req *model.RegisterRequest) (verificationLink string, err error) {
 	if !s.telegramEnabled() {
 		return "", ErrTelegramDown
@@ -97,7 +97,7 @@ func (s *AuthService) Register(ctx context.Context, req *model.RegisterRequest) 
 	return link, nil
 }
 
-// RequestOTP sends an OTP via Telegram if the user has activated the bot.
+
 func (s *AuthService) RequestOTP(ctx context.Context, name string) error {
 	if !s.telegramEnabled() {
 		return ErrTelegramDown
@@ -131,7 +131,7 @@ func (s *AuthService) RequestOTP(ctx context.Context, name string) error {
 	return nil
 }
 
-// VerifyOTP checks the OTP and returns a JWT token.
+
 func (s *AuthService) VerifyOTP(ctx context.Context, name, code string) (*model.TokenResponse, error) {
 	user, err := s.users.FindByName(ctx, name)
 	if err != nil {
@@ -157,7 +157,7 @@ func (s *AuthService) VerifyOTP(ctx context.Context, name, code string) (*model.
 	return &model.TokenResponse{Token: token, User: user}, nil
 }
 
-// ActivateTelegram is called by the bot when user sends /start <token>.
+
 func (s *AuthService) ActivateTelegram(ctx context.Context, token string, chatID int64) error {
 	if !s.telegramEnabled() {
 		return ErrTelegramDown
@@ -187,7 +187,7 @@ func (s *AuthService) ActivateTelegram(ctx context.Context, token string, chatID
 	return nil
 }
 
-// IsActivated returns true if user exists and has activated Telegram.
+
 func (s *AuthService) IsActivated(ctx context.Context, name string) (bool, error) {
 	user, err := s.users.FindByName(ctx, name)
 	if err != nil {
@@ -199,7 +199,7 @@ func (s *AuthService) IsActivated(ctx context.Context, name string) (bool, error
 	return user.TGVerified, nil
 }
 
-// GetProfile returns user profile by ID.
+
 func (s *AuthService) GetProfile(ctx context.Context, userID string) (*model.User, error) {
 	user, err := s.users.GetProfile(ctx, userID)
 	if err != nil {
