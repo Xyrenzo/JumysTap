@@ -1,9 +1,5 @@
--- Migration: 001_init.sql
--- Run once against your PostgreSQL database
-
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Users table
 CREATE TABLE IF NOT EXISTS users (
     id                TEXT        PRIMARY KEY,
     name              TEXT        NOT NULL UNIQUE,
@@ -49,7 +45,6 @@ WHERE TRUE;
 
 CREATE INDEX IF NOT EXISTS idx_users_name_lower ON users (LOWER(name));
 
--- Jobs table
 CREATE TABLE IF NOT EXISTS jobs (
     id            TEXT        PRIMARY KEY,
     author_id     TEXT        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -82,14 +77,12 @@ ALTER TABLE jobs ADD COLUMN IF NOT EXISTS processed BOOLEAN DEFAULT FALSE;
 CREATE INDEX IF NOT EXISTS idx_jobs_author_id ON jobs(author_id);
 CREATE INDEX IF NOT EXISTS idx_jobs_created_at ON jobs(created_at DESC);
 
--- OTP codes (one per user, replaced on each request)
 CREATE TABLE IF NOT EXISTS otp_codes (
     user_id    TEXT        PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     code       TEXT        NOT NULL,
     expires_at TIMESTAMPTZ NOT NULL
 );
 
--- Pending registrations (token issued before Telegram activation)
 CREATE TABLE IF NOT EXISTS pending_registrations (
     user_id    TEXT        PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     token      TEXT        NOT NULL UNIQUE,
