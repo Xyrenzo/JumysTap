@@ -9,7 +9,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// OnActivate is called when user sends /start <token>
 type OnActivate func(ctx context.Context, token string, chatID int64) error
 
 type Bot struct {
@@ -31,14 +30,9 @@ func NewBot(token string, onActivate OnActivate) (*Bot, error) {
 	}, nil
 }
 
-// BotUsername returns bot username (for deep links)
 func (b *Bot) BotUsername() string {
 	return b.api.Self.UserName
 }
-
-//
-// ======================= AUTH MESSAGES =======================
-//
 
 func (b *Bot) SendOTP(chatID int64, code string) error {
 	text := fmt.Sprintf(
@@ -70,41 +64,38 @@ func (b *Bot) SendWelcome(chatID int64, name string) error {
 	return err
 }
 
-//
-// ======================= JOB MATCH NOTIFICATION =======================
-//
-
-// SendJobMatch — уведомление о подходящей вакансии
 func (b *Bot) SendJobMatch(chatID int64, jobTitle string, jobID string, score float64) error {
 	text := fmt.Sprintf(
 		"🔥 Новая подходящая вакансия!\n\n"+
 			"📌 %s\n"+
-			"📊 Совпадение: %.0f%%\n\n"+
-			"🆔 ID: %s",
+			"📊 Совпадение: %.0f%%",
 		jobTitle,
 		score*100,
-		jobID,
 	)
 
 	msg := tgbotapi.NewMessage(chatID, text)
+	msg.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{
+			{
+				tgbotapi.NewInlineKeyboardButtonURL(
+					"👀 Посмотреть вакансию",
+					fmt.Sprintf("https://jumystap.onrender.com/api/jobs/%s", jobID),
+				),
+			},
+		},
+	}
 
 	_, err := b.api.Send(msg)
 	if err != nil {
 		return fmt.Errorf("send job match: %w", err)
 	}
-
 	return nil
 }
 
-// NotifyJobMatch — реализует интерфейс service.Notifier
-// Это единственный метод который нужен JobService
 func (b *Bot) NotifyJobMatch(chatID int64, jobID, jobTitle string, score float64) error {
 	return b.SendJobMatch(chatID, jobTitle, jobID, score)
 }
 
-//
-// ======================= POLLING =======================
-//
 
 func (b *Bot) StartPolling(ctx context.Context) {
 	u := tgbotapi.NewUpdate(0)
@@ -132,15 +123,10 @@ func (b *Bot) StartPolling(ctx context.Context) {
 	}
 }
 
-//
-// ======================= MESSAGE HANDLER =======================
-//
-
 func (b *Bot) handleMessage(ctx context.Context, msg *tgbotapi.Message) {
 	text := strings.TrimSpace(msg.Text)
 	chatID := msg.Chat.ID
 
-	// /start <token>
 	if strings.HasPrefix(text, "/start ") {
 		token := strings.TrimSpace(strings.TrimPrefix(text, "/start "))
 
@@ -158,18 +144,13 @@ func (b *Bot) handleMessage(ctx context.Context, msg *tgbotapi.Message) {
 		return
 	}
 
-	// /start
 	if text == "/start" {
-		b.reply(chatID, "👋 Привет! JumysTap бот.\n\nАктивируйте аккаунт через сайт.")
+		b.reply(chatID, "👋 Привет! JumysTap бот.\n\nАктивируйте аккаунт через <a href=\"https://jumystap.onrender.com/\">сайт.</a>")
 		return
 	}
 
-	b.reply(chatID, "ℹ️ Используйте ссылку с сайта для активации.")
+	b.reply(chatID, "ℹ️ Используйте ссылку с сайта для активации. ")
 }
-
-//
-// ======================= HELPERS =======================
-//
 
 func (b *Bot) reply(chatID int64, text string) {
 	msg := tgbotapi.NewMessage(chatID, text)
