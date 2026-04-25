@@ -29,7 +29,6 @@ func (r *OTPRepository) Save(ctx context.Context, userID, code string, expiresAt
 	return nil
 }
 
-// Verify checks and deletes OTP in one query. Returns userID if valid.
 func (r *OTPRepository) Verify(ctx context.Context, userID, code string) (bool, error) {
 	const q = `
 		DELETE FROM otp_codes
@@ -39,12 +38,11 @@ func (r *OTPRepository) Verify(ctx context.Context, userID, code string) (bool, 
 	var id string
 	err := r.pool.QueryRow(ctx, q, userID, code).Scan(&id)
 	if err != nil {
-		return false, nil // expired or wrong code
+		return false, nil
 	}
 	return true, nil
 }
 
-// PendingRegistration — token issued during registration, before TG activation
 type PendingRepository struct {
 	pool *pgxpool.Pool
 }
