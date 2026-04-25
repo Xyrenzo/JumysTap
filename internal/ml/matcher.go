@@ -8,19 +8,17 @@ import (
 	"JumysTab/internal/model"
 )
 
-const defaultThreshold = 0.6 // минимальный score для уведомления
+const defaultThreshold = 0.6
 
-// CandidateScore — результат скоринга одного кандидата
 type CandidateScore struct {
 	User  *model.User
 	Score float64
 }
 
-// Config — настройки ML матчера (передаётся из main/service)
 type Config struct {
-	MLURL     string  // URL Python сервиса, "" = только локальный скоринг
-	Threshold float64 // минимальный порог score
-	TopN      int     // максимум уведомлений на одну вакансию
+	MLURL     string 
+	Threshold float64
+	TopN      int
 }
 
 func (c *Config) threshold() float64 {
@@ -37,8 +35,6 @@ func (c *Config) topN() int {
 	return c.TopN
 }
 
-// RankUsers — скорит всех кандидатов под конкретный job
-// Возвращает топ-N отсортированных по убыванию score
 func RankUsers(ctx context.Context, users []*model.User, job *model.Job, cfg Config) []CandidateScore {
 	results := make([]CandidateScore, 0, len(users))
 
