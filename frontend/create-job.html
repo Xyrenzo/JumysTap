@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JumysTap — Создать задание</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="create-job.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <header class="top-bar">
+      <div class="top-bar__inner">
+        <button class="icon-btn" type="button" id="btn-back" title="Назад" aria-label="Назад">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M10.8 3.5L5.2 9l5.6 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="brand" aria-label="JumysTap">
+          <svg class="brand__mark" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="url(#jt_lg1)" />
+            <defs>
+              <linearGradient id="jt_lg1" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="55%" stop-color="#0ea5e9" />
+                <stop offset="100%" stop-color="#22d3ee" />
+              </linearGradient>
+              <linearGradient id="jt_lg2" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#e0f2fe" />
+                <stop offset="100%" stop-color="#ffffff" />
+              </linearGradient>
+            </defs>
+            <text x="6" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">J</text>
+            <text x="26" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">T</text>
+            <circle cx="46.5" cy="12" r="3.6" fill="rgba(255,255,255,.34)" />
+          </svg>
+          <div class="brand__text">
+            <div class="brand__title">Создать задание</div>
+            <div class="brand__sub">Работодатель • JumysTap</div>
+          </div>
+        </div>
+
+        <div class="top-bar__right">
+          <div class="hint-pill" id="jobtype-pill">Тип: —</div>
+          <button class="btn btn--sm btn--primary" type="button" id="btn-submit-top">
+            <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M3 9l4.5 4.5L15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Создать
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="page-head">
+        <h1 class="page-title">Создать пост‑задание</h1>
+        <p class="page-sub">Соберите задание в карточках: тип, описание, навыки, время и контакт.</p>
+      </div>
+
+      <form class="grid" id="job-form" autocomplete="on" novalidate>
+        <!-- Job type -->
+        <section class="card" id="sec-type">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M4 8h14M7 5h8M6 12h10M6 16h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Тип задания</h2>
+              <p class="card__sub">Выберите один вариант</p>
+            </div>
+          </div>
+
+          <div class="chip-grid" id="jobtype-grid" role="group" aria-label="Тип задания">
+            <button type="button" class="chip chip--single" data-group="jobType" data-value="vacancy">вакансия</button>
+            <button type="button" class="chip chip--single" data-group="jobType" data-value="freelance">фриланс</button>
+          </div>
+          <div class="field-error" id="err-jobtype" role="alert"></div>
+        </section>
+
+        <!-- Details -->
+        <section class="card card--span" id="sec-details">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="4" y="3.5" width="14" height="15" rx="2.4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Название и описание</h2>
+              <p class="card__sub">Что нужно сделать?</p>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group" id="title-wrap">
+              <label class="field-label" for="title" id="title-label">Название</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M5 6h10M5 10h7M5 14h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <input class="input" id="title" type="text" placeholder="Например: Нужен бариста на выходные" required />
+              </div>
+              <div class="field-error" id="err-title" role="alert"></div>
+            </div>
+
+            <div class="field-group" id="peopleNeeded-wrap">
+              <label class="field-label" for="peopleNeeded">Сколько людей нужно</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <circle cx="8" cy="8" r="2.6" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M3 17c0-2.6 2.2-4.7 5-4.7s5 2.1 5 4.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M13.2 9.2c1.5.3 2.8 1.6 2.8 3.2 0 1.1-.5 2.1-1.3 2.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <input class="input" id="peopleNeeded" type="number" min="1" step="1" value="1" inputmode="numeric" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group" id="experienceRequired-wrap">
+            <label class="field-label" for="experienceRequired">Требуемый опыт</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="M6 6V5a2 2 0 012-2h4a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  <rect x="4" y="6" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M7 10h6M7 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </span>
+              <select class="input input--select" id="experienceRequired">
+                <option value="">Не важно</option>
+                <option value="no">Без опыта</option>
+                <option value="0-1">До 1 года</option>
+                <option value="1-3">1–3 года</option>
+                <option value="3-5">3–5 лет</option>
+                <option value="5+">5+ лет</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="description">Описание</label>
+            <div class="textarea-wrap">
+              <textarea
+                class="textarea"
+                id="description"
+                maxlength="1200"
+                placeholder="Опишите задачу: требования, сроки, условия, что важно…"
+                required
+              ></textarea>
+              <div class="textarea-footer">
+                <span class="muted" id="desc-count">0 / 1200</span>
+                <label class="toggle">
+                  <input type="checkbox" id="urgent" />
+                  <span class="toggle__ui" aria-hidden="true"></span>
+                  срочно
+                </label>
+              </div>
+            </div>
+            <div class="field-error" id="err-description" role="alert"></div>
+          </div>
+        </section>
+
+        <!-- Required skills -->
+        <section class="card" id="sec-skills">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M11 3l2.1 6.2L19 11l-5.9 1.7L11 19l-2.1-6.3L3 11l5.9-1.8L11 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Требуемые навыки</h2>
+              <p class="card__sub">Ввод тегами</p>
+            </div>
+          </div>
+
+          <div class="skills-box" id="skills-box">
+            <input class="skill-input" id="skill-input" type="text" placeholder="Введите навык и нажмите Enter…" autocomplete="off" />
+          </div>
+          <div class="skill-suggestions hidden" id="skill-suggestions" role="listbox" aria-label="Подсказки навыков"></div>
+          <p class="field-hint">Enter / запятая — добавить • Backspace — удалить последний</p>
+        </section>
+
+        <!-- Location -->
+        <section class="card" id="sec-location">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M11 2.5a6 6 0 016 6c0 4-6 10.5-6 10.5S5 12.5 5 8.5a6 6 0 016-6z" stroke="currentColor" stroke-width="1.6" />
+                <circle cx="11" cy="8.5" r="2" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Локация</h2>
+              <p class="card__sub">Город и адрес/район</p>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label" for="city">Город</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5" />
+                    <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                </span>
+                <input class="input" id="city" type="text" placeholder="Алматы" autocomplete="address-level2" required />
+              </div>
+              <div class="field-error" id="err-city" role="alert"></div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="address">Адрес / район</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M4 9l6-6 6 6v8a2 2 0 01-2 2H6a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M8 19v-6h4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <input class="input" id="address" type="text" placeholder="Медеуский р-н, Абая 10" autocomplete="street-address" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Time -->
+        <section class="card" id="sec-time">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                <path d="M11 7v4l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Доступность / время</h2>
+              <p class="card__sub">Можно выбрать несколько</p>
+            </div>
+          </div>
+
+          <div class="chip-grid" id="avail-grid" role="group" aria-label="Доступность">
+            <button type="button" class="chip" data-group="availability" data-value="morning"><span class="chip__dot" aria-hidden="true"></span>утро</button>
+            <button type="button" class="chip" data-group="availability" data-value="day"><span class="chip__dot" aria-hidden="true"></span>день</button>
+            <button type="button" class="chip" data-group="availability" data-value="evening"><span class="chip__dot" aria-hidden="true"></span>вечер</button>
+            <button type="button" class="chip" data-group="availability" data-value="night"><span class="chip__dot" aria-hidden="true"></span>ночь</button>
+            <button type="button" class="chip" data-group="availability" data-value="weekend"><span class="chip__dot" aria-hidden="true"></span>выходные</button>
+            <button type="button" class="chip" data-group="availability" data-value="flexible"><span class="chip__dot" aria-hidden="true"></span>гибко</button>
+          </div>
+          <div class="row row--date" id="date-wrap">
+            <div class="field-group">
+              <label class="field-label" for="date">Дата</label>
+              <input class="input input--plain" id="date" type="date" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Payment & format -->
+        <section class="card card--span" id="sec-pay">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="7.4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M8.2 10.2c0-1.4 1.4-2.5 3-2.5s3 1.1 3 2.5-1.4 2.2-3 2.2-3 1-3 2.4 1.4 2.5 3 2.5 3-1.1 3-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Оплата и формат</h2>
+              <p class="card__sub">Укажите сумму и формат работы</p>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label" for="payment" id="payment-label">Зарплата</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" />
+                    <path
+                      d="M10 6.5v7M7.5 8.5c0-1.105 1.12-2 2.5-2s2.5.895 2.5 2-1.12 2-2.5 2-2.5.895-2.5 2 1.12 2 2.5 2 2.5-.895 2.5-2"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+                <input class="input" id="payment" type="number" min="0" step="1000" inputmode="numeric" placeholder="350000" />
+                <span class="input-suffix">₸</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Формат работы</label>
+              <div class="chip-grid" id="format-grid" role="group" aria-label="Формат работы">
+                <button type="button" class="chip chip--single" data-group="workFormat" data-value="onsite">офис</button>
+                <button type="button" class="chip chip--single" data-group="workFormat" data-value="remote">удалённо</button>
+                <button type="button" class="chip chip--single" data-group="workFormat" data-value="hybrid">гибрид</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="safepay hidden" id="safepay">
+            <div class="safepay__badge" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M10 2.2l7.2 3.1v5.2c0 4.1-2.9 7.8-7.2 8.9C5.7 18.3 2.8 14.6 2.8 10.5V5.3L10 2.2z" stroke="currentColor" stroke-width="1.6" />
+                <path d="M8.2 10.2h3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="safepay__text">
+              <div class="safepay__title">SafePay (безопасная оплата)</div>
+              <div class="safepay__desc">Оплата резервируется до завершения задачи.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="card" id="sec-contact">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M7 4h8v14H7z" stroke="currentColor" stroke-width="1.6" />
+                <path d="M9 7h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                <path d="M8.5 16.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Контакт</h2>
+              <p class="card__sub">Телефон для связи</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="contactPhone">Телефон</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M6 2.8h2.6l1.1 3.8-1.9 1.3a10.8 10.8 0 004.3 4.3l1.3-1.9 3.8 1.1V14c0 .9-.6 1.7-1.5 1.9-1.3.3-3.8.5-6.9-1.3-3.1-1.8-5.2-5.6-5.8-7.7-.3-1 .4-2 .8-2.6L6 2.8z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <input class="input" id="contactPhone" type="tel" placeholder="+7 777 123 45 67" autocomplete="tel" required />
+            </div>
+            <div class="field-error" id="err-phone" role="alert"></div>
+          </div>
+        </section>
+
+        <!-- Image -->
+        <section class="card" id="sec-media">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="3.5" y="5" width="15" height="12" rx="2.4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M7 13l2-2 3 3 2-2 2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="8" cy="9" r="1" fill="currentColor" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Картинка (опционально)</h2>
+              <p class="card__sub">Загрузка с превью</p>
+            </div>
+          </div>
+
+          <div class="upload">
+            <div class="upload__preview" id="image-preview" aria-label="Превью изображения">
+              <div class="upload__placeholder">
+                <div class="upload__ph-title">Перетащите изображение</div>
+                <div class="upload__ph-sub">или нажмите, чтобы загрузить</div>
+              </div>
+            </div>
+            <div class="upload__actions">
+              <label class="btn btn--outline" for="image-input">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M9 1v10M5 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <rect x="2" y="12" width="14" height="4" rx="2" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+                Загрузить
+              </label>
+              <button class="btn btn--outline" type="button" id="btn-image-clear">Убрать</button>
+              <input type="file" id="image-input" accept="image/*" hidden />
+            </div>
+          </div>
+        </section>
+
+        <div class="submit-row">
+          <button class="btn btn--primary btn--lg" id="btn-submit" type="submit">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3 10l5.5 5.5L17 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Создать задание
+          </button>
+        </div>
+      </form>
+
+      <div class="toast toast--success hidden" id="toast-success" role="status" aria-live="polite">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="#22c55e" opacity=".15" />
+          <path d="M6 10l3 3 5-6" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Задание создано успешно</span>
+      </div>
+
+      <div class="toast toast--error hidden" id="toast-error" role="alert">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="#ef4444" opacity=".12" />
+          <path d="M10 6v5" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+          <path d="M10 14.5h.01" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+        </svg>
+        <span id="toast-error-text">Проверьте обязательные поля.</span>
+      </div>
+    </main>
+
+    <script src="app-api.js"></script>
+    <script src="create-job.js"></script>
+  </body>
+</html>

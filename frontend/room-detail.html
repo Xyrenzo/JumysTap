@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JumysTap — Комната</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="room-detail.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <header class="top-bar">
+      <div class="top-bar__inner">
+        <button class="icon-btn" type="button" id="btn-back" title="Назад" aria-label="Назад">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M10.8 3.5L5.2 9l5.6 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="brand" aria-label="JumysTap">
+          <svg class="brand__mark" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="url(#jt_lg1)" />
+            <defs>
+              <linearGradient id="jt_lg1" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="55%" stop-color="#0ea5e9" />
+                <stop offset="100%" stop-color="#22d3ee" />
+              </linearGradient>
+              <linearGradient id="jt_lg2" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#e0f2fe" />
+                <stop offset="100%" stop-color="#ffffff" />
+              </linearGradient>
+            </defs>
+            <text x="6" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">J</text>
+            <text x="26" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">T</text>
+            <circle cx="46.5" cy="12" r="3.6" fill="rgba(255,255,255,.34)" />
+          </svg>
+          <div class="brand__text">
+            <div class="brand__title" id="room-title-mini">Комната</div>
+            <div class="brand__sub" id="room-sub-mini">детали задания</div>
+          </div>
+        </div>
+
+        <div class="top-bar__right">
+          <div class="pill" id="pill-type">—</div>
+          <div class="money" aria-label="Оплата">
+            <div class="money__value" id="money-value">—</div>
+            <div class="money__hint" id="money-hint">₸</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="page-head">
+        <h1 class="page-title" id="room-title">—</h1>
+        <p class="page-sub" id="room-sub">—</p>
+      </div>
+
+      <div class="grid">
+        <section class="card card--span">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                <path d="M11 7v4l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Коротко</h2>
+              <p class="card__sub">Что, где, когда и формат</p>
+            </div>
+          </div>
+
+          <div class="facts" id="facts"></div>
+        </section>
+
+        <section class="card card--span">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="4" y="3.5" width="14" height="15" rx="2.4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M7 8h8M7 12h8M7 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Описание</h2>
+              <p class="card__sub">Полная информация</p>
+            </div>
+          </div>
+
+          <div class="text" id="desc"></div>
+        </section>
+
+        <section class="card">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M11 3l2.1 6.2L19 11l-5.9 1.7L11 19l-2.1-6.3L3 11l5.9-1.8L11 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Навыки</h2>
+              <p class="card__sub">Что пригодится</p>
+            </div>
+          </div>
+
+          <div class="tags" id="skills"></div>
+        </section>
+
+        <section class="card">
+          <div class="card__header">
+            <div class="card__icon card__icon--tg" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M2 11l18-7-7 18-3-7-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                <path d="M10 14l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Контакт</h2>
+              <p class="card__sub">Напишите работодателю в Telegram</p>
+            </div>
+          </div>
+
+          <div class="contact">
+            <div class="contact__row">
+              <div class="contact__label">Telegram</div>
+              <div class="contact__value" id="tg-handle">—</div>
+            </div>
+            <div class="contact__actions">
+              <a class="btn btn--primary" id="btn-tg" href="#" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M1 9l16-6-6 16-3-7-7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                </svg>
+                Написать в Telegram
+              </a>
+              <button class="btn btn--outline" type="button" id="btn-copy">Скопировать</button>
+            </div>
+            <div class="hint">
+              После согласования условий вы можете договориться о дате/времени и формате работы прямо в чате.
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="empty hidden" id="empty">
+        <div class="empty__title">Комната не найдена</div>
+        <div class="empty__sub">Вернитесь в список и попробуйте снова.</div>
+        <div style="margin-top: 12px">
+          <a class="btn btn--primary" href="worker-rooms.html">К списку комнат</a>
+        </div>
+      </div>
+
+      <div class="toast hidden" id="toast" role="status" aria-live="polite">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="#22c55e" opacity=".15" />
+          <path d="M6 10l3 3 5-6" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span id="toast-text">Скопировано</span>
+      </div>
+    </main>
+
+    <script src="app-api.js"></script>
+    <script src="room-detail.js"></script>
+  </body>
+</html>

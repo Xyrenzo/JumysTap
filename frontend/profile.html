@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JumysTap — Настройка профиля</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <header class="top-bar">
+      <div class="top-bar__inner">
+        <button class="icon-btn" type="button" id="btn-back" title="Назад" aria-label="Назад">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M10.8 3.5L5.2 9l5.6 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="brand" aria-label="JumysTap">
+          <svg class="brand__mark" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="url(#jt_lg1)" />
+            <defs>
+              <linearGradient id="jt_lg1" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="55%" stop-color="#0ea5e9" />
+                <stop offset="100%" stop-color="#22d3ee" />
+              </linearGradient>
+              <linearGradient id="jt_lg2" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#e0f2fe" />
+                <stop offset="100%" stop-color="#ffffff" />
+              </linearGradient>
+            </defs>
+            <text x="6" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">J</text>
+            <text x="26" y="41" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="url(#jt_lg2)">T</text>
+            <circle cx="46.5" cy="12" r="3.6" fill="rgba(255,255,255,.34)" />
+          </svg>
+          <div class="brand__text">JumysTap — smart job platform</div>
+        </div>
+
+        <div class="top-bar__right">
+          <div class="save-status" id="save-status">Не сохранено</div>
+          <button class="btn btn--sm btn--primary" type="button" id="btn-save-top" title="Сохранить профиль">
+            <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M3 9l4.5 4.5L15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="page-head">
+        <h1 class="page-title">Настройка профиля</h1>
+        <p class="page-sub">Как в Instagram: быстро, чисто и красиво — каждая секция в отдельной карточке.</p>
+      </div>
+
+      <noscript>
+        <div class="noscript">Включите JavaScript, чтобы работали теги навыков, превью аватара и сохранение.</div>
+      </noscript>
+
+      <form class="sections" id="profile-form" autocomplete="on" novalidate>
+        <!-- Profile -->
+        <section class="card card--span" id="sec-profile">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.6" />
+                <path d="M3 19c0-4 3.582-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Профиль</h2>
+              <p class="card__sub">Аватар, имя и город</p>
+            </div>
+          </div>
+
+          <div class="profile-row">
+            <div class="avatar-wrap">
+              <div class="avatar-ring" aria-hidden="true">
+                <img
+                  class="avatar-img"
+                  id="avatar-preview"
+                  alt="Аватар"
+                  src="data:image/svg+xml,%3Csvg viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='80' fill='%23dbeafe'/%3E%3Ccircle cx='40' cy='32' r='14' fill='%2393c5fd'/%3E%3Cellipse cx='40' cy='72' rx='22' ry='16' fill='%2393c5fd'/%3E%3C/svg%3E"
+                />
+              </div>
+              <label class="avatar-upload-btn" for="avatar-input">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M9 1v10M5 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <rect x="2" y="12" width="14" height="4" rx="2" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+                Загрузить
+              </label>
+              <input type="file" id="avatar-input" accept="image/*" hidden />
+              <button class="avatar-clear hidden" id="avatar-clear" type="button">Удалить</button>
+            </div>
+
+          <div class="profile-fields">
+            <div class="field-group">
+              <label class="field-label" for="display-name">Отображаемое имя</label>
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5" />
+                      <path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                  </span>
+                  <input class="input" type="text" id="display-name" placeholder="Алия Бекова" autocomplete="name" required />
+                </div>
+                <div class="field-error" id="err-display-name" role="alert"></div>
+              </div>
+
+            <div class="field-group">
+              <label class="field-label" for="city">Город / локация</label>
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                      <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                  </span>
+                  <input class="input" type="text" id="city" placeholder="Алматы" autocomplete="address-level2" />
+              </div>
+            </div>
+
+            <div class="field-group" id="experience-wrap">
+              <label class="field-label" for="experience">Стаж работы</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M6 6V5a2 2 0 012-2h4a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <rect x="4" y="6" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M7 10h6M7 13h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </span>
+                <select class="input input--select" id="experience">
+                  <option value="">Не указано</option>
+                  <option value="no">Без опыта</option>
+                  <option value="0-1">До 1 года</option>
+                  <option value="1-3">1–3 года</option>
+                  <option value="3-5">3–5 лет</option>
+                  <option value="5+">5+ лет</option>
+                </select>
+              </div>
+              <div class="field-hint">Для работодателей это поле скрыто</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+        <!-- Role -->
+        <section class="card" id="sec-role">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="3" y="7" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6" />
+                <path d="M7 7V6a4 4 0 018 0v1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Роль</h2>
+              <p class="card__sub">Кто вы на платформе?</p>
+            </div>
+          </div>
+
+          <div class="role-grid" id="role-grid">
+            <label class="role-card" data-value="worker">
+              <input type="radio" name="role" value="worker" hidden />
+              <div class="role-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="13" r="6" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M6 30c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </div>
+              <span class="role-card__name">Соискатель</span>
+              <span class="role-card__desc">Ищу работу или проект</span>
+              <span class="role-check" aria-hidden="true">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </label>
+
+            <label class="role-card" data-value="employer">
+              <input type="radio" name="role" value="employer" hidden />
+              <div class="role-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none">
+                  <rect x="6" y="14" width="24" height="18" rx="3" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M12 14V11a6 6 0 0112 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M18 21v4M15 23h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </div>
+              <span class="role-card__name">Работодатель</span>
+              <span class="role-card__desc">Размещаю вакансии и нанимаю</span>
+              <span class="role-check" aria-hidden="true">
+                <svg viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </label>
+          </div>
+
+          <div class="field-error" id="err-role" role="alert"></div>
+        </section>
+
+        <!-- О себе -->
+        <section class="card" id="sec-about">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M4 6h14M4 10h10M4 14h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">О себе</h2>
+              <p class="card__sub">Большое поле “Расскажите о себе”</p>
+            </div>
+          </div>
+
+          <div class="bio-wrap">
+            <textarea
+              class="bio-textarea"
+              id="bio"
+              maxlength="500"
+              placeholder="Расскажите о себе: опыт, сильные стороны, что ищете, что умеете…"
+            ></textarea>
+            <div class="bio-footer">
+              <span class="bio-count" id="bio-count">0 / 500</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Навыки -->
+        <section class="card" id="sec-skills">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M11 3l2.09 6.26L19 11l-5.91 1.74L11 19l-2.09-6.26L3 11l5.91-1.74L11 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Навыки</h2>
+              <p class="card__sub">Теги навыков (Enter / запятая)</p>
+            </div>
+          </div>
+
+          <div class="skills-box" id="skills-box">
+            <input class="skill-input" id="skill-input" type="text" placeholder="Например: Figma, Go, SMM…" autocomplete="off" />
+          </div>
+          <div class="skill-suggestions hidden" id="skill-suggestions" role="listbox" aria-label="Подсказки навыков"></div>
+          <p class="field-hint">Backspace на пустом поле — удалит последний тег</p>
+        </section>
+
+        <!-- Доступность -->
+        <section class="card" id="sec-avail">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <rect x="3" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6" />
+                <path d="M7 2v4M15 2v4M3 9h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Доступность</h2>
+              <p class="card__sub">Можно выбрать несколько</p>
+            </div>
+          </div>
+
+          <div class="chip-grid" id="avail-grid">
+            <button type="button" class="chip" data-group="avail" data-value="morning">
+              <span class="chip__dot" aria-hidden="true"></span> утро
+            </button>
+            <button type="button" class="chip" data-group="avail" data-value="day">
+              <span class="chip__dot" aria-hidden="true"></span> день
+            </button>
+            <button type="button" class="chip" data-group="avail" data-value="evening">
+              <span class="chip__dot" aria-hidden="true"></span> вечер
+            </button>
+            <button type="button" class="chip" data-group="avail" data-value="night">
+              <span class="chip__dot" aria-hidden="true"></span> ночь
+            </button>
+            <button type="button" class="chip" data-group="avail" data-value="weekend">
+              <span class="chip__dot" aria-hidden="true"></span> выходные
+            </button>
+            <button type="button" class="chip" data-group="avail" data-value="flexible">
+              <span class="chip__dot" aria-hidden="true"></span> гибко
+            </button>
+          </div>
+        </section>
+
+        <!-- Предпочтения -->
+        <section class="card" id="sec-prefs">
+          <div class="card__header">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M4 6h14M7 11h8M10 16h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Предпочтения</h2>
+              <p class="card__sub">Тип занятости и ожидаемый доход</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Тип занятости</label>
+            <div class="chip-grid" id="jobtype-grid">
+              <button type="button" class="chip chip--single" data-group="jobtype" data-value="vacancy">вакансия</button>
+              <button type="button" class="chip chip--single" data-group="jobtype" data-value="temporary">временная</button>
+              <button type="button" class="chip chip--single" data-group="jobtype" data-value="freelance">фриланс</button>
+            </div>
+          </div>
+
+          <div class="field-group field-group--salary">
+            <label class="field-label" for="salary">Ожидаемая зарплата</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" />
+                  <path
+                    d="M10 6.5v7M7.5 8.5c0-1.105 1.12-2 2.5-2s2.5.895 2.5 2-1.12 2-2.5 2-2.5.895-2.5 2 1.12 2 2.5 2 2.5-.895 2.5-2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <input class="input" type="number" id="salary" placeholder="350000" min="0" step="1000" inputmode="numeric" />
+              <span class="input-suffix">₸</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Telegram -->
+        <section class="card" id="sec-tg">
+          <div class="card__header">
+            <div class="card__icon card__icon--tg" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none">
+                <path d="M2 11l18-7-7 18-3-7-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                <path d="M10 14l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="card__title">Telegram</h2>
+              <p class="card__sub">Статус подключения</p>
+            </div>
+          </div>
+
+          <div class="tg-row">
+            <div class="tg-status tg-status--off" id="tg-status" aria-live="polite">
+              <span class="tg-dot" aria-hidden="true"></span>
+              <span id="tg-status-text">не подключён</span>
+            </div>
+            <button class="btn btn--outline btn--sm" id="btn-tg" type="button">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M1 9l16-6-6 16-3-7-7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+              Подключить Telegram
+            </button>
+          </div>
+        </section>
+
+        <div class="submit-row">
+          <button class="btn btn--primary btn--lg" id="btn-submit" type="submit">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3 10l5.5 5.5L17 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Сохранить профиль
+          </button>
+        </div>
+      </form>
+
+      <div class="toast toast--success hidden" id="toast-success" role="status" aria-live="polite">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="#22c55e" opacity=".15" />
+          <path d="M6 10l3 3 5-6" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span id="toast-success-text">Профиль успешно сохранён!</span>
+      </div>
+
+      <div class="toast toast--error hidden" id="toast-error" role="alert">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" fill="#ef4444" opacity=".12" />
+          <path d="M10 6v5" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+          <path d="M10 14.5h.01" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+        </svg>
+        <span id="toast-error-text">Проверьте поля и попробуйте снова.</span>
+      </div>
+
+      <!-- Role switch confirmation -->
+      <div class="modal hidden" id="role-modal" role="dialog" aria-modal="true" aria-labelledby="role-modal-title" aria-describedby="role-modal-desc">
+        <div class="modal__backdrop" data-modal-close="true" aria-hidden="true"></div>
+        <div class="modal__panel" role="document">
+          <div class="modal__badge" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none">
+              <path d="M10 2.2l7.2 3.1v5.2c0 4.1-2.9 7.8-7.2 8.9C5.7 18.3 2.8 14.6 2.8 10.5V5.3L10 2.2z" stroke="currentColor" stroke-width="1.6" />
+              <path d="M7 10.1l2 2.1 4.3-4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <h3 class="modal__title" id="role-modal-title">Изменить роль?</h3>
+          <p class="modal__desc" id="role-modal-desc">
+            Вы уже выбрали роль. При смене роли некоторые секции формы могут скрыться/появиться.
+          </p>
+
+          <div class="modal__actions">
+            <button class="btn btn--outline" type="button" id="role-modal-cancel" data-modal-close="true">Отмена</button>
+            <button class="btn btn--primary" type="button" id="role-modal-confirm">Да, сменить</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="app-api.js"></script>
+    <script src="profile.js"></script>
+  </body>
+</html>

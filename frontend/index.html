@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JumysTap — Auth</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Background decoration -->
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-grid"></div>
+
+  <main class="auth-wrapper">
+
+    <!-- LOGO -->
+    <div class="logo-block">
+      <svg class="logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="18" fill="url(#grad1)"/>
+        <defs>
+          <linearGradient id="grad1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#0ea5e9"/>
+          </linearGradient>
+          <linearGradient id="grad2" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#e0f2fe"/>
+            <stop offset="100%" stop-color="#ffffff"/>
+          </linearGradient>
+        </defs>
+        <!-- J -->
+        <text x="6" y="46" font-family="Syne, sans-serif" font-weight="800" font-size="32" fill="url(#grad2)">J</text>
+        <!-- T -->
+        <text x="31" y="46" font-family="Syne, sans-serif" font-weight="800" font-size="32" fill="url(#grad2)">T</text>
+        <!-- decorative dot -->
+        <circle cx="54" cy="14" r="4" fill="rgba(255,255,255,0.35)"/>
+        <circle cx="10" cy="52" r="2.5" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-name">JumysTap</span>
+        <span class="logo-sub">smart job platform</span>
+      </div>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div class="tab-switcher" role="tablist">
+      <button class="tab-btn active" id="tab-login" role="tab" aria-selected="true" onclick="switchTab('login')">Вход</button>
+      <button class="tab-btn" id="tab-register" role="tab" aria-selected="false" onclick="switchTab('register')">Регистрация</button>
+      <div class="tab-indicator"></div>
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+
+      <!-- ========== LOGIN ========== -->
+      <div class="form-panel" id="panel-login">
+
+        <!-- Step 1: Name -->
+        <div class="step" id="login-step-1">
+          <h2 class="form-title">Добро пожаловать</h2>
+          <p class="form-desc">Введите имя для получения кода в Telegram</p>
+
+          <div class="field-group">
+            <label class="field-label" for="login-name">Имя пользователя</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <input class="input" type="text" id="login-name" placeholder="Алия Бекова" autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="msg" id="login-step1-msg"></div>
+
+          <button class="btn btn--primary" id="btn-request-code" onclick="requestCode()">
+            <span>Получить код</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Step 2: Code -->
+        <div class="step hidden" id="login-step-2">
+          <button class="back-btn" onclick="goBack('login')">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M16 10H4M9 5l-5 5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Назад
+          </button>
+          <h2 class="form-title">Введите код</h2>
+          <p class="form-desc" id="login-code-hint">Код отправлен в Telegram</p>
+
+          <div class="field-group">
+            <label class="field-label" for="login-code">Код подтверждения</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <input class="input input--code" type="text" id="login-code" placeholder="••••••" maxlength="8" autocomplete="one-time-code" />
+            </div>
+          </div>
+
+          <div class="msg" id="login-step2-msg"></div>
+
+          <button class="btn btn--primary" onclick="loginWithCode()">
+            <span>Войти</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Step 3: Profile -->
+        <div class="step hidden" id="login-step-3">
+          <div class="success-icon">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><path d="M14 24l7 7 13-14" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="profile-card" id="profile-data"></div>
+          <a class="btn btn--primary" href="profile.html">Настроить профиль →</a>
+          <button class="btn btn--outline" onclick="logout()">Выйти</button>
+        </div>
+
+      </div>
+
+      <!-- ========== REGISTER ========== -->
+      <div class="form-panel hidden" id="panel-register">
+
+        <!-- Step 1: Form -->
+        <div class="step" id="reg-step-1">
+          <h2 class="form-title">Создать аккаунт</h2>
+          <p class="form-desc">Заполните данные для регистрации</p>
+
+          <div class="field-group">
+            <label class="field-label" for="reg-name">Имя</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <input class="input" type="text" id="reg-name" placeholder="Алия Бекова" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="reg-phone">Телефон</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M2 3.5A1.5 1.5 0 013.5 2h1.629a1.5 1.5 0 011.423 1.026l.813 2.44a1.5 1.5 0 01-.33 1.536L5.96 8.079a11.046 11.046 0 005.96 5.96l1.077-1.475a1.5 1.5 0 011.536-.33l2.44.813A1.5 1.5 0 0118 14.371V16a1.5 1.5 0 01-1.5 1.5A15.5 15.5 0 012.5 2 1.5 1.5 0 012 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <input class="input" type="tel" id="reg-phone" placeholder="+7 700 000 00 00" autocomplete="tel" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="reg-city">Город</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+              </span>
+              <input class="input" type="text" id="reg-city" placeholder="Алматы" autocomplete="address-level2" />
+            </div>
+          </div>
+
+          <div class="msg" id="reg-step1-msg"></div>
+
+          <button class="btn btn--primary" onclick="register()">
+            <span>Зарегистрироваться</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Step 2: Telegram activation -->
+        <div class="step hidden" id="reg-step-2">
+          <div class="tg-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="#dbeafe"/>
+              <path d="M10 24l24-10-9 24-5-9-10-5z" fill="#3b82f6" opacity=".3"/>
+              <path d="M10 24l10 5 5 9 9-24L10 24z" stroke="#3b82f6" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M20 29l-3-3 13-8" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2 class="form-title">Активация через Telegram</h2>
+          <p class="form-desc">Перейдите в Telegram для активации аккаунта</p>
+
+          <div class="info-card" id="reg-tg-info">
+            <!-- filled by JS -->
+          </div>
+
+          <a class="btn btn--primary" id="reg-tg-link" href="#" target="_blank" rel="noopener">
+            <span>Открыть Telegram</span>
+            <svg viewBox="0 0 20 20" fill="none"><path d="M11 3h6v6M17 3l-9 9M8 5H4a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <button class="btn btn--ghost" onclick="switchTab('login')">Уже активировали? Войти</button>
+        </div>
+
+      </div>
+
+    </div><!-- /card -->
+
+  </main>
+
+  <script src="app-api.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
