@@ -6,10 +6,9 @@ import (
 	"JumysTab/internal/model"
 )
 
-// Jaccard — пересечение / объединение двух множеств строк
 func Jaccard(a, b []string) float64 {
 	if len(a) == 0 && len(b) == 0 {
-		return 1.0 // оба пустые — считаем совпадением
+		return 1.0
 	}
 
 	setA := make(map[string]bool, len(a))
@@ -42,7 +41,6 @@ func cityMatch(a, b string) float64 {
 	return 0.0
 }
 
-// BuildFeatures — строит вектор признаков из пары (user, job)
 func BuildFeatures(user *model.User, job *model.Job) Features {
 	return Features{
 		SkillMatch:        Jaccard(user.Skills, job.Skills),
@@ -52,8 +50,6 @@ func BuildFeatures(user *model.User, job *model.Job) Features {
 	}
 }
 
-// salaryMatch — простая эвристика: если у worker нет ожиданий — нейтрально
-// расширишь потом когда salary станет числом в job тоже
 func salaryMatch(_ *int64, _ string) float64 {
 	return 0.5
 }
