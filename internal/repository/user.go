@@ -179,7 +179,6 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, userID string, req *
 	return nil
 }
 
-// GetAllWorkers — возвращает всех users с role="worker" у кого есть telegram
 func (r *UserRepository) GetAllWorkers(ctx context.Context) ([]*model.User, error) {
 	const q = `
 		SELECT
@@ -262,7 +261,6 @@ func (r *UserRepository) scanOne(ctx context.Context, q string, args ...any) (*m
 	return &u, nil
 }
 
-// scanRow — для итерации по rows (используется в GetAllWorkers)
 func (r *UserRepository) scanRow(rows interface{ Scan(...any) error }) (*model.User, error) {
 	var (
 		u              model.User
