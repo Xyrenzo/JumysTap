@@ -8,7 +8,6 @@ import (
 	"time"
 )
 
-// Features — входной вектор для ML модели
 type Features struct {
 	SkillMatch        float64 `json:"skill_match"`
 	CityMatch         float64 `json:"city_match"`
@@ -22,8 +21,6 @@ type mlResponse struct {
 
 var httpClient = &http.Client{Timeout: 3 * time.Second}
 
-// Predict — отправляет фичи в Python ML сервис, возвращает score [0..1]
-// Если ML недоступен — fallback на локальный скоринг
 func Predict(mlURL string, f Features) (float64, error) {
 	body, err := json.Marshal(f)
 	if err != nil {
@@ -32,7 +29,6 @@ func Predict(mlURL string, f Features) (float64, error) {
 
 	resp, err := httpClient.Post(mlURL+"/predict", "application/json", bytes.NewBuffer(body))
 	if err != nil {
-		// ML сервис недоступен — используем локальный fallback
 		return localScore(f), nil
 	}
 	defer resp.Body.Close()
@@ -49,8 +45,6 @@ func Predict(mlURL string, f Features) (float64, error) {
 	return result.Score, nil
 }
 
-// localScore — работает без Python, взвешенная сумма фич
-// Используется как fallback или на этапе разработки
 func localScore(f Features) float64 {
 	return f.SkillMatch*0.5 +
 		f.CityMatch*0.25 +
