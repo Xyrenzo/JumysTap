@@ -154,7 +154,7 @@ func (b *Bot) handleMessage(ctx context.Context, msg *tgbotapi.Message) {
 
 func (b *Bot) reply(chatID int64, text string) {
 	msg := tgbotapi.NewMessage(chatID, text)
-
+	msg.ParseMode = "HTML"
 	if _, err := b.api.Send(msg); err != nil {
 		log.Printf("[TG] reply error: %v", err)
 	}
