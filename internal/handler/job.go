@@ -99,7 +99,7 @@ func (h *JobHandler) GetJob(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, job)
 }
 
-// GET /api/jobs/my  (protected)
+// GET /api/jobs/my
 func (h *JobHandler) MyJobs(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.GetUserID(r)
 	if userID == "" {
@@ -146,7 +146,7 @@ func (h *JobHandler) DeleteJob(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, map[string]string{"message": "deleted"})
 }
 
-// PUT /api/profile  (protected)
+// PUT /api/profile
 func (h *JobHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	userID := middleware.GetUserID(r)
 	if userID == "" {
